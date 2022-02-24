@@ -5,9 +5,9 @@
       <div class="post-user">
         <div class="post-user-text">
           <h3>{{ username }}</h3>
-          <h3>{{date.getHours() }}:{{ date.getMinutes() }} {{ date.getDate() }}/{{date.getMonth() + 1 }}-{{ date.getFullYear() }}</h3>
+          <h3>{{ date }}</h3>
         </div>
-        <img :src=profilePic alt="Profile Picture">
+        <img src="@/assets/profile.png" alt="Profile Picture">
       </div>
     </div>
     <div class="post-body">
@@ -27,7 +27,7 @@ export default {
     title: String,
     username: String,
     profilePic: String,
-    date: Date,
+    date: String,
     body: String
   }
 }
@@ -39,6 +39,7 @@ export default {
   background-color: lightgray;
   padding-right: 10px;
   padding-left: 10px;
+  margin: 20px;
 }
 
 .post-title {
@@ -55,6 +56,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  margin-right: 10px;
 }
 
 .post-body {
@@ -85,5 +87,11 @@ button {
 
 .post-follow {
   border-color: blue;
+}
+
+img {
+  height: 50px;
+  width: auto;
+  border-radius: 25px;
 }
 </style>

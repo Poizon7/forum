@@ -11,6 +11,9 @@
     <router-link to="/profile">About</router-link>
   </div>
   <router-view/>
+  <footer>
+    <h6>This is the footer text</h6>
+  </footer>
 </template>
 
 <script>
@@ -64,5 +67,10 @@ h1 {
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+footer {
+  padding: 50px;
+  background-color: lightgray;
 }
 </style>
