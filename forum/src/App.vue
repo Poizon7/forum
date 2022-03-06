@@ -8,7 +8,8 @@
       <label for=""></label>
       <input type="text">
     </form>
-    <router-link to="/profile">About</router-link>
+    <router-link v-if="server.logedIn" to="/profile">{{ server.username }}</router-link>
+    <router-link v-else to="/login">Login</router-link>
   </div>
   <router-view/>
   <footer>
@@ -17,11 +18,23 @@
 </template>
 
 <script>
+import { server } from '@/main.js'
+
 export default {
   data () {
     return {
+      server,
       mainPageTitle: 'Home'
     }
+  },
+  async mounted () {
+    console.log(document.cookie)
+    const url = 'verify'
+    const data = await server.getData(url)
+    console.log(data)
+    server.username = data.username
+    server.userid = data.userid
+    server.logedIn = true
   }
 }
 </script>
