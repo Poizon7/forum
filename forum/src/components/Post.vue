@@ -14,7 +14,8 @@
       <p>{{ body }}</p>
     </div>
     <div class="post-control">
-      <button class="post-like">Like</button>
+      <button class="post-like" v-if="activeLiked" @click="unLike">Unlike {{ activeLikes }}</button>
+      <button class="post-like" v-else @click="like">Like {{ activeLikes }}</button>
       <button class="post-comment">Comment</button>
       <button class="post-follow">Follow</button>
     </div>
@@ -22,23 +23,54 @@
 </template>
 
 <script>
+import { server } from '@/main.js'
+
 export default {
   props: {
     title: String,
+    id: Number,
     username: String,
     profilePic: String,
     date: String,
-    body: String
+    body: String,
+    likes: Number,
+    liked: Boolean
+  },
+  data () {
+    return {
+      server,
+      activeLikes: this.likes,
+      activeLiked: this.liked
+    }
+  },
+  methods: {
+    like () {
+      const url = 'like'
+      const body = JSON.stringify({
+        id: this.id
+      })
+      server.postData(body, url)
+      this.activeLikes++
+      this.activeLiked = true
+    },
+    unLike () {
+      const url = 'unLike'
+      const body = JSON.stringify({
+        id: this.id
+      })
+      server.postData(body, url)
+      this.activeLikes--
+      this.activeLiked = false
+    }
   }
 }
 </script>
 
 <style scoped>
 .post {
-  border-radius: 20px;
+  border-radius: 10px;
   background-color: lightgray;
-  padding-right: 10px;
-  padding-left: 10px;
+  padding: 10px;
   margin: 20px;
 }
 
@@ -62,7 +94,7 @@ export default {
 .post-body {
   padding: 10px;
   background-color: white;
-  border-radius: 20px;
+  border-radius: 10px;
 }
 
 .post-control {

@@ -3,11 +3,14 @@
     <Post
       v-for="post in posts"
       :key="post.id"
+      :id="post.id"
       :title="post.title"
       :username="post.username"
       :profilePicture="server.profilePic"
       :date="post.daytime"
       :body="post.text"
+      :likes="post.likes"
+      :liked="post.liked"
     />
     <button @click="this.create = !this.create" v-if="!create && server.logedIn">+</button>
     <PostTemplate v-if="create" @post="addPost" />
@@ -27,7 +30,7 @@ export default {
   data () {
     return {
       server,
-      posts: [{}],
+      posts: [],
       create: false
     }
   },
@@ -52,6 +55,7 @@ export default {
   async mounted () {
     const url = 'getPost'
     const response = await server.getData(url)
+    console.log(response)
     var option = { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', secound: 'numeric' }
     response.posts.forEach(e => {
       var t = e.daytime.split(/[-:TZ]/)
@@ -59,6 +63,18 @@ export default {
       var d = new Date(Date.UTC(t[0], t[1] - 1, t[2], t[3], t[4], t[5]))
       d = d.toLocaleDateString('en-UK', option)
       e.daytime = d
+      e.likes = 0
+      response.likes.forEach(element => {
+        if (element.postid === e.id) {
+          e.likes = element['count(*)']
+        }
+      })
+      e.liked = false
+      response.userlikes.forEach(element => {
+        if (element.postid === e.id) {
+          e.liked = true
+        }
+      })
       response.users.forEach(element => {
         if (element.id === e.userid) {
           e.username = element.username
@@ -66,7 +82,6 @@ export default {
       })
       this.posts.push(e)
     })
-    this.posts.splice(0, 1)
   }
 }
 </script>
