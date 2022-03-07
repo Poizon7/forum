@@ -1,15 +1,21 @@
 <template>
   <div id="nav">
-    <router-link to="/" id="logo">
+    <div class="home">
+      <router-link to="/" id="logo">
       <img src="./assets/logo.png" alt="logo">
       <h1>Language forum</h1>
     </router-link>
-    <form action="">
+    </div>
+    <div class="search">
+      <form action="">
       <label for=""></label>
       <input type="text">
     </form>
-    <router-link v-if="server.logedIn" to="/profile">{{ server.username }}</router-link>
-    <router-link v-else to="/login">Login</router-link>
+    </div>
+    <div class="profile">
+      <router-link v-if="server.logedIn" to="/profile">{{ server.username }}</router-link>
+      <router-link v-else to="/login">Login</router-link>
+    </div>
   </div>
   <router-view/>
   <footer>
@@ -35,6 +41,9 @@ export default {
     server.username = data.username
     server.userid = data.userid
     server.logedIn = true
+    window.setInterval(() => {
+      server.getData(url)
+    }, 60000)
   }
 }
 </script>
@@ -50,6 +59,10 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  display: grid;
+  min-height: 100vh;
+  grid-template-rows: min-content auto min-content;
 }
 
 #nav {
@@ -80,6 +93,12 @@ h1 {
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+.home, .search, .profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 footer {

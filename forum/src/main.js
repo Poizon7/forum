@@ -5,6 +5,7 @@ import router from './router'
 export const server = reactive({
   username: '',
   userid: '',
+  profilePic: '../assets/profile.png',
   logedIn: false,
   serverURL: 'http://192.168.68.110:3000/',
   async postData (data, url) {

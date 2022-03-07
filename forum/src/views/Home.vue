@@ -1,11 +1,11 @@
 <template>
   <div id="home">
     <Post
-      v-for="(post) in posts"
+      v-for="post in posts"
       :key="post.id"
       :title="post.title"
       :username="post.username"
-      :profilePicture="profilePic"
+      :profilePicture="server.profilePic"
       :date="post.daytime"
       :body="post.text"
     />
@@ -28,7 +28,6 @@ export default {
     return {
       server,
       posts: [{}],
-      profilePic: '../assets/profile.png',
       create: false
     }
   },
