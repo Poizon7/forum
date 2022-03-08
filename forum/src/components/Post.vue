@@ -16,16 +16,32 @@
     <div class="post-control">
       <button class="post-like" v-if="activeLiked" @click="unLike">Unlike {{ activeLikes }}</button>
       <button class="post-like" v-else @click="like">Like {{ activeLikes }}</button>
-      <button class="post-comment">Comment</button>
-      <button class="post-follow">Follow</button>
+      <button class="post-comment" v-if="!commenting" @click="commenting = true">Comment</button>
+    </div>
+    <form v-if="commenting">
+      <textarea v-model="text" id="" cols="30" rows="1"></textarea>
+      <button class="post-comment" v-if="commenting" @click.prevent="comment">Comment</button>
+    </form>
+    <div class="commets">
+      <button class="comment-btn" @click="getComments" v-if="!activeComments">view comments</button>
+      <Comment
+        v-for="comment in comments"
+        :key="comment.id"
+        :username="comment.username"
+        :date="comment.daytime"
+        :text="comment.text" />
     </div>
   </div>
 </template>
 
 <script>
+import Comment from '@/components/Comment.vue'
 import { server } from '@/main.js'
 
 export default {
+  components: {
+    Comment
+  },
   props: {
     title: String,
     id: Number,
@@ -39,8 +55,12 @@ export default {
   data () {
     return {
       server,
+      comments: [],
       activeLikes: this.likes,
-      activeLiked: this.liked
+      activeLiked: this.liked,
+      activeComments: false,
+      commenting: false,
+      text: ''
     }
   },
   methods: {
@@ -61,6 +81,41 @@ export default {
       server.postData(body, url)
       this.activeLikes--
       this.activeLiked = false
+    },
+    async getComments () {
+      const url = 'getComments'
+      const body = JSON.stringify({
+        id: this.id
+      })
+      console.log(body)
+      const response = await server.postData(body, url)
+
+      console.log(response)
+      var option = { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', secound: 'numeric' }
+      response.comments.forEach(e => {
+        var t = e.daytime.split(/[-:TZ]/)
+        // Apply each element to the Date function
+        var d = new Date(Date.UTC(t[0], t[1] - 1, t[2], t[3], t[4], t[5]))
+        d = d.toLocaleDateString('en-UK', option)
+        e.daytime = d
+
+        response.users.forEach(element => {
+          if (element.id === e.userid) {
+            e.username = element.username
+          }
+        })
+        this.comments.push(e)
+      })
+      this.activeComments = true
+    },
+    async comment () {
+      this.commenting = false
+      const url = 'comment'
+      const body = JSON.stringify({
+        id: this.id,
+        text: this.text
+      })
+      await server.postData(body, url)
     }
   }
 }
@@ -115,10 +170,6 @@ button {
 
 .post-comment {
   border-color: green;
-}
-
-.post-follow {
-  border-color: blue;
 }
 
 img {
