@@ -7,7 +7,8 @@ export const server = reactive({
   userid: '',
   profilePic: '../assets/profile.png',
   logedIn: false,
-  serverURL: 'http://192.168.68.110:3000/',
+  serverURL: 'http://10.151.172.94:3000/',
+  searchterm: '',
   async postData (data, url) {
     const response = await fetch(this.serverURL + url, {
       method: 'POST',

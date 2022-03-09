@@ -9,7 +9,8 @@
     <div class="search">
       <form action="">
       <label for=""></label>
-      <input type="text">
+      <input type="text" v-model="searchterm">
+      <button @click.prevent="search">Search</button>
     </form>
     </div>
     <div class="profile">
@@ -24,13 +25,22 @@
 </template>
 
 <script>
+import router from './router'
 import { server } from '@/main.js'
 
 export default {
   data () {
     return {
       server,
-      mainPageTitle: 'Home'
+      mainPageTitle: 'Home',
+      searchterm: ''
+    }
+  },
+  methods: {
+    async search () {
+      server.searchterm = this.searchterm
+      console.log('route')
+      router.push({ path: '/search' })
     }
   },
   async mounted () {
