@@ -21,15 +21,18 @@ export default {
 <style scoped>
 .title {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
 .comment {
-  background-color: lightsteelblue;
+  background-color: #bed5f0;
   margin: 5px;
+  padding: 10px;
   border-radius: 5px;
-}
 
-h4, h5 {
-  padding: 5px;
+  width: max-content;
 }
 </style>

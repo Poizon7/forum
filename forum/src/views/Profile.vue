@@ -11,6 +11,7 @@
     <div class="info">
       <img src="@/assets/profile.png" alt="Profile Picture">
       <h2>{{ server.username }}</h2>
+      <button @click="logout">Log out</button>
     </div>
     </div>
   </div>
@@ -18,6 +19,7 @@
 
 <script>
 import UserPost from '@/components/UserPost.vue'
+import router from '../router'
 import { server } from '@/main.js'
 
 export default {
@@ -28,6 +30,16 @@ export default {
     return {
       server,
       posts: []
+    }
+  },
+  methods: {
+    logout () {
+      document.cookie = 'token=0; max-age=0'
+      console.log(document.cookie)
+      server.userid = ''
+      server.username = ''
+      server.logedIn = false
+      router.push({ path: '/' })
     }
   },
   async mounted () {

@@ -7,8 +7,10 @@ export const server = reactive({
   userid: '',
   profilePic: '../assets/profile.png',
   logedIn: false,
-  serverURL: 'http://10.151.172.94:3000/',
+  serverURL: 'http://10.151.172.92:3000/',
   searchterm: '',
+  timeOption: { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', secound: 'numeric' },
+  timeFormat: 'en-UK',
   async postData (data, url) {
     const response = await fetch(this.serverURL + url, {
       method: 'POST',

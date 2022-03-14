@@ -14,9 +14,17 @@
       <p>{{ body }}</p>
     </div>
     <div class="post-control">
-      <button class="post-like" v-if="activeLiked" @click="unLike">Unlike {{ activeLikes }}</button>
-      <button class="post-like" v-else @click="like">Like {{ activeLikes }}</button>
-      <button class="post-comment" v-if="!commenting" @click="commenting = true">Comment</button>
+      <button class="post-like" v-if="activeLiked || (!server.logedIn && activeLikes > 0)" @click="unLike">
+        <img src="@/assets/liked.png" alt="">
+        <h4>{{ activeLikes }}</h4>
+      </button>
+      <button class="post-like" v-else @click="like">
+        <img src="@/assets/like.png" alt="">
+        <h4>{{ activeLikes }}</h4>
+      </button>
+      <button class="post-comment" v-if="!commenting  && server.logedIn" @click="commenting = true">
+        <h4>Comment</h4>
+      </button>
     </div>
     <form v-if="commenting">
       <textarea v-model="text" id="" cols="30" rows="1"></textarea>
@@ -36,6 +44,7 @@
 
 <script>
 import Comment from '@/components/Comment.vue'
+import router from '../router'
 import { server } from '@/main.js'
 
 export default {
@@ -65,57 +74,57 @@ export default {
   },
   methods: {
     like () {
-      const url = 'like'
-      const body = JSON.stringify({
-        id: this.id
-      })
-      server.postData(body, url)
-      this.activeLikes++
-      this.activeLiked = true
+      if (server.logedIn) {
+        const body = JSON.stringify({
+          id: this.id
+        })
+        server.postData(body, 'like')
+        this.activeLikes++
+        this.activeLiked = true
+      } else {
+        router.push({ path: '/login' })
+      }
     },
     unLike () {
-      const url = 'unLike'
-      const body = JSON.stringify({
-        id: this.id
-      })
-      server.postData(body, url)
-      this.activeLikes--
-      this.activeLiked = false
+      if (server.logedIn) {
+        const body = JSON.stringify({
+          id: this.id
+        })
+        server.postData(body, 'unLike')
+        this.activeLikes--
+        this.activeLiked = false
+      } else {
+        router.push({ path: '/login' })
+      }
     },
     async getComments () {
-      const url = 'getComments'
       const body = JSON.stringify({
         id: this.id
       })
-      console.log(body)
-      const response = await server.postData(body, url)
-
-      console.log(response)
-      var option = { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', secound: 'numeric' }
+      const response = await server.postData(body, 'getComments')
       response.comments.forEach(e => {
-        var t = e.daytime.split(/[-:TZ]/)
+        const t = e.daytime.split(/[-:TZ]/)
         // Apply each element to the Date function
-        var d = new Date(Date.UTC(t[0], t[1] - 1, t[2], t[3], t[4], t[5]))
-        d = d.toLocaleDateString('en-UK', option)
+        let d = new Date(Date.UTC(t[0], t[1] - 1, t[2], t[3], t[4], t[5]))
+        d = d.toLocaleDateString(server.timeFormat, server.timeOption)
         e.daytime = d
 
-        response.users.forEach(element => {
-          if (element.id === e.userid) {
-            e.username = element.username
-          }
-        })
         this.comments.push(e)
       })
       this.activeComments = true
     },
     async comment () {
-      this.commenting = false
-      const url = 'comment'
-      const body = JSON.stringify({
-        id: this.id,
-        text: this.text
-      })
-      await server.postData(body, url)
+      if (server.logedIn) {
+        this.commenting = false
+        const url = 'comment'
+        const body = JSON.stringify({
+          id: this.id,
+          text: this.text
+        })
+        await server.postData(body, url)
+      } else {
+        router.push({ path: '/login' })
+      }
     }
   }
 }
@@ -124,26 +133,34 @@ export default {
 <style scoped>
 .post {
   border-radius: 10px;
-  background-color: #8382c7;
+  background-color: #97BBE6;
   padding: 10px;
   margin: 20px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .post-title {
   display: flex;
   justify-content: space-between;
-  padding: 10px;
+  align-items: center;
+}
+
+.post-title h2 {
+  margin-left: 10px;
 }
 
 .post-user {
   display: flex;
+  gap: 10px;
 }
 
 .post-user-text {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  margin-right: 10px;
 }
 
 .post-body {
@@ -153,28 +170,47 @@ export default {
 }
 
 .post-control {
-  padding: 10px;
   display: flex;
   gap: 20px;
 }
 
-button {
-  padding: 5px;
-  border-radius: 10px;
-  border-width: 5px;
+.post-like {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  background-color: transparent;
+  border-color: transparent;
 }
 
-.post-like {
-  border-color: red;
+.post-like > img {
+  width: 40px;
+  height: auto;
+}
+
+.post-like > h4 {
+  font-size: 24px;
 }
 
 .post-comment {
-  border-color: green;
+  background-color: transparent;
+  border-color: black;
+  border-width: 2px;
+  border-radius: 10px;
+}
+
+.post-comment > h4 {
+  font-size: 18px;
 }
 
 img {
   height: 50px;
   width: auto;
   border-radius: 25px;
+}
+
+.comment-btn {
+  background-color: transparent;
+  border-color: transparent;
 }
 </style>

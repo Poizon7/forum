@@ -37,49 +37,42 @@ export default {
   // Test login
   methods:
   {
-    addPost (title, post) {
+    async addPost (title, post) {
       this.create = false
       const body = JSON.stringify({
         id: server.userid,
         title: title,
         body: post
       })
-      const url = 'addPost'
-      server.postData(body, url).then((data) => console.log(data))
+      console.log(body)
+      await server.postData(body, 'addPost')
       var option = { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', secound: 'numeric' }
       var d = new Date()
       d = d.toLocaleDateString('en-UK', option)
-      this.posts.push({ id: '999', userid: body.id, title: body.title, text: body.post, daytime: d })
+      this.posts.push({ id: '999', userid: server.userid, title: title, text: post, daytime: d })
     }
   },
   async mounted () {
-    const url = 'getPost'
-    const response = await server.getData(url)
+    const response = await server.getData('getPost')
+    let liked
+    if (server.logedIn) {
+      liked = await server.getData('liked')
+    }
     console.log(response)
     var option = { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', secound: 'numeric' }
-    response.posts.forEach(e => {
-      var t = e.daytime.split(/[-:TZ]/)
+    response.posts.forEach(async e => {
+      const t = e.daytime.split(/[-:TZ]/)
       // Apply each element to the Date function
-      var d = new Date(Date.UTC(t[0], t[1] - 1, t[2], t[3], t[4], t[5]))
+      let d = new Date(Date.UTC(t[0], t[1] - 1, t[2], t[3], t[4], t[5]))
       d = d.toLocaleDateString('en-UK', option)
       e.daytime = d
-      e.likes = 0
-      response.likes.forEach(element => {
-        if (element.postid === e.id) {
-          e.likes = element['count(*)']
-        }
-      })
-      e.liked = false
-      response.userlikes.forEach(element => {
-        if (element.postid === e.id) {
-          e.liked = true
-        }
-      })
-      response.users.forEach(element => {
-        if (element.id === e.userid) {
-          e.username = element.username
-        }
-      })
+      if (server.logedIn) {
+        liked.forEach(el => {
+          if (el.postid === e.id) {
+            e.liked = true
+          }
+        })
+      }
       this.posts.push(e)
     })
   }

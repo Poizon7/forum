@@ -9,7 +9,9 @@
       <form action="">
       <label for=""></label>
       <input type="text" v-model="searchterm">
-      <button @click.prevent="search">Search</button>
+      <button @click.prevent="search">
+        <img src="@/assets/search.png" alt="">
+      </button>
     </form>
     </div>
     <div class="profile">
@@ -44,14 +46,13 @@ export default {
   },
   async mounted () {
     console.log(document.cookie)
-    const url = 'verify'
-    const data = await server.getData(url)
+    const data = await server.getData('verify')
     console.log(data)
     server.username = data.username
     server.userid = data.userid
     server.logedIn = true
     window.setInterval(() => {
-      server.getData(url)
+      server.getData('verify')
     }, 60000)
   }
 }
@@ -82,7 +83,7 @@ body {
   padding: 20px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  background-color: #4caf50;
+  background-color: #6FEC79;
 }
 
 #logo {
@@ -114,8 +115,28 @@ h1 {
   align-items: center;
 }
 
+.search form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search form input {
+  border-radius: 10px;
+}
+
+.search button {
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.search img {
+  width: 30px;
+  height: auto;
+}
+
 footer {
   padding: 50px;
-  background-color: #4caf50;
+  background-color: #6FEC79;
 }
 </style>
