@@ -2,7 +2,6 @@
   <div id="nav">
     <div class="home">
       <router-link to="/" id="logo">
-      <img src="./assets/logo.png" alt="logo">
       <h1>Language forum</h1>
     </router-link>
     </div>
@@ -65,6 +64,10 @@ export default {
   box-sizing: border-box;
 }
 
+body {
+  background-color: #eeeeee;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -79,7 +82,7 @@ export default {
   padding: 20px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  background-color: lightgray;
+  background-color: #4caf50;
 }
 
 #logo {
@@ -98,11 +101,11 @@ h1 {
 
 #nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: #000000;
 }
 
 #nav a.router-link-exact-active {
-  color: #42b983;
+  color: #000000;
 }
 
 .home, .search, .profile {
@@ -113,6 +116,6 @@ h1 {
 
 footer {
   padding: 50px;
-  background-color: lightgray;
+  background-color: #4caf50;
 }
 </style>

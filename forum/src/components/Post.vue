@@ -124,7 +124,7 @@ export default {
 <style scoped>
 .post {
   border-radius: 10px;
-  background-color: lightgray;
+  background-color: #8382c7;
   padding: 10px;
   margin: 20px;
 }

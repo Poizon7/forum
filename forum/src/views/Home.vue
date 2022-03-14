@@ -90,7 +90,6 @@ export default {
 #home {
   width: 1024px;
   margin: auto;
-  margin-top: 50px;
 }
 
 button {
