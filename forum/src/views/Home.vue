@@ -45,7 +45,7 @@ export default {
         body: post
       })
       console.log(body)
-      await server.postData(body, 'addPost')
+      await server.postData(body, 'addPosts')
       var option = { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', secound: 'numeric' }
       var d = new Date()
       d = d.toLocaleDateString('en-UK', option)
@@ -53,7 +53,7 @@ export default {
     }
   },
   async mounted () {
-    const response = await server.getData('getPost')
+    const response = await server.getData('getPosts')
     let liked
     if (server.logedIn) {
       liked = await server.getData('liked')

@@ -1,43 +1,46 @@
 <template>
   <div class="post">
-    <div class="post-title">
-      <h2>{{ title }}</h2>
-      <div class="post-user">
-        <div class="post-user-text">
-          <h3>{{ username }}</h3>
-          <h3>{{ date }}</h3>
+    <h6 @click="$emit('back')" v-if="search">return</h6>
+    <div id="container">
+      <div class="post-title">
+        <h2>{{ title }}</h2>
+        <div class="post-user">
+          <div class="post-user-text">
+            <h3>{{ username }}</h3>
+            <h3>{{ date }}</h3>
+          </div>
+          <img src="@/assets/profile.png" alt="Profile Picture">
         </div>
-        <img src="@/assets/profile.png" alt="Profile Picture">
       </div>
-    </div>
-    <div class="post-body">
-      <p>{{ body }}</p>
-    </div>
-    <div class="post-control">
-      <button class="post-like" v-if="activeLiked || (!server.logedIn && activeLikes > 0)" @click="unLike">
-        <img src="@/assets/liked.png" alt="">
-        <h4>{{ activeLikes }}</h4>
-      </button>
-      <button class="post-like" v-else @click="like">
-        <img src="@/assets/like.png" alt="">
-        <h4>{{ activeLikes }}</h4>
-      </button>
-      <button class="post-comment" v-if="!commenting  && server.logedIn" @click="commenting = true">
-        <h4>Comment</h4>
-      </button>
-    </div>
-    <form v-if="commenting">
-      <textarea v-model="text" id="" cols="30" rows="1"></textarea>
-      <button class="post-comment" v-if="commenting" @click.prevent="comment">Comment</button>
-    </form>
-    <div class="commets">
-      <button class="comment-btn" @click="getComments" v-if="!activeComments">view comments</button>
-      <Comment
-        v-for="comment in comments"
-        :key="comment.id"
-        :username="comment.username"
-        :date="comment.daytime"
-        :text="comment.text" />
+      <div class="post-body">
+        <p>{{ body }}</p>
+      </div>
+      <div class="post-control">
+        <button class="post-like" v-if="activeLiked || (!server.logedIn && activeLikes > 0)" @click="unLike">
+          <img src="@/assets/liked.png" alt="">
+          <h4>{{ activeLikes }}</h4>
+        </button>
+        <button class="post-like" v-else @click="like">
+          <img src="@/assets/like.png" alt="">
+          <h4>{{ activeLikes }}</h4>
+        </button>
+        <button class="post-comment" v-if="!commenting  && server.logedIn" @click="commenting = true">
+          <h4>Comment</h4>
+        </button>
+      </div>
+      <form v-if="commenting">
+        <textarea v-model="text" id="" cols="30" rows="1"></textarea>
+        <button class="post-comment" v-if="commenting" @click.prevent="comment">Comment</button>
+      </form>
+      <div class="commets">
+        <button class="comment-btn" @click="getComments" v-if="!activeComments">view comments</button>
+        <Comment
+          v-for="comment in comments"
+          :key="comment.id"
+          :username="comment.username"
+          :date="comment.daytime"
+          :text="comment.text" />
+      </div>
     </div>
   </div>
 </template>
@@ -59,7 +62,8 @@ export default {
     date: String,
     body: String,
     likes: Number,
-    liked: Boolean
+    liked: Boolean,
+    search: Boolean
   },
   data () {
     return {
@@ -131,7 +135,7 @@ export default {
 </script>
 
 <style scoped>
-.post {
+#container {
   border-radius: 10px;
   background-color: #97BBE6;
   padding: 10px;

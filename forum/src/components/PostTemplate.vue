@@ -20,7 +20,7 @@ export default {
 <style scoped>
 .post {
   border-radius: 20px;
-  background-color: lightgray;
+  background-color: #97BBE6;
   padding: 10px;
   margin: 20px;
   display: flex;
