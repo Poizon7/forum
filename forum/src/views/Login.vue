@@ -10,6 +10,7 @@
           <input name="password" type="password" v-model="pass">
           <button @click.prevent="login()">Login</button>
           <button @click.prevent="signup()">Sign up</button>
+          <h3>To sign up; enter a username that does not exist</h3>
         </fieldset>
     </form>
   </main>

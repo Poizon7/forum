@@ -7,7 +7,7 @@ export const server = reactive({
   userid: '',
   profilePic: '../assets/profile.png',
   logedIn: false,
-  serverURL: 'http://10.151.172.127:3000/',
+  serverURL: 'http://10.151.172.105:3000/',
   searchterm: '',
   timeOption: { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', secound: 'numeric' },
   timeFormat: 'en-UK',

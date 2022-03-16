@@ -21,7 +21,8 @@
   </div>
   <router-view/>
   <footer>
-    <h6>This is the footer text</h6>
+    <h6>Contact</h6>
+    <h6>Email: ekby.viktor@elev.ga.ntig.se</h6>
   </footer>
 </template>
 

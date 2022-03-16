@@ -15,7 +15,7 @@
       <div class="post-body">
         <p>{{ body }}</p>
       </div>
-      <div class="post-control">
+      <div class="post-sub" :class="{ column: activeComments}">
         <button class="post-like" v-if="activeLiked || (!server.logedIn && activeLikes > 0)" @click="unLike">
           <img src="@/assets/liked.png" alt="">
           <h4>{{ activeLikes }}</h4>
@@ -24,22 +24,22 @@
           <img src="@/assets/like.png" alt="">
           <h4>{{ activeLikes }}</h4>
         </button>
+        <div class="commets">
+          <Comment
+            v-for="comment in comments"
+            :key="comment.id"
+            :username="comment.username"
+            :date="comment.daytime"
+            :text="comment.text" />
+        </div>
         <button class="post-comment" v-if="!commenting  && server.logedIn" @click="commenting = true">
           <h4>Comment</h4>
         </button>
-      </div>
-      <form v-if="commenting">
-        <textarea v-model="text" id="" cols="30" rows="1"></textarea>
-        <button class="post-comment" v-if="commenting" @click.prevent="comment">Comment</button>
-      </form>
-      <div class="commets">
+        <form v-if="commenting">
+          <textarea v-model="text" id="" cols="30" rows="1"></textarea>
+          <button class="post-comment" v-if="commenting" @click.prevent="comment">Comment</button>
+        </form>
         <button class="comment-btn" @click="getComments" v-if="!activeComments">view comments</button>
-        <Comment
-          v-for="comment in comments"
-          :key="comment.id"
-          :username="comment.username"
-          :date="comment.daytime"
-          :text="comment.text" />
       </div>
     </div>
   </div>
@@ -173,9 +173,14 @@ export default {
   border-radius: 10px;
 }
 
-.post-control {
+.post-sub {
   display: flex;
   gap: 20px;
+}
+
+.column {
+  flex-direction: column;
+  width: min-content;
 }
 
 .post-like {
@@ -201,6 +206,7 @@ export default {
   border-color: black;
   border-width: 2px;
   border-radius: 10px;
+  padding: 5px;
 }
 
 .post-comment > h4 {
@@ -216,5 +222,10 @@ img {
 .comment-btn {
   background-color: transparent;
   border-color: transparent;
+}
+
+textarea {
+  padding: 3px;
+  border-radius: 5px;
 }
 </style>

@@ -12,7 +12,7 @@
       :likes="post.likes"
       :liked="post.liked"
     />
-    <button @click="this.create = !this.create" v-if="!create && server.logedIn">+</button>
+    <button id="addPostButton" @click="this.create = !this.create" v-if="!create && server.logedIn">+</button>
     <PostTemplate v-if="create" @post="addPost" />
   </div>
 </template>
@@ -34,7 +34,6 @@ export default {
       create: false
     }
   },
-  // Test login
   methods:
   {
     async addPost (title, post) {
@@ -45,7 +44,7 @@ export default {
         body: post
       })
       console.log(body)
-      await server.postData(body, 'addPosts')
+      await server.postData(body, 'addPost')
       var option = { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', secound: 'numeric' }
       var d = new Date()
       d = d.toLocaleDateString('en-UK', option)
@@ -86,12 +85,18 @@ export default {
 }
 
 button {
-  width: 50px;
-  height: 50px;
-  border-radius: 25px;
+  width: 76px;
+  height: 76px;
+  border-radius: 38px;
   border-width: 0;
   background-color: red;
   color: black;
   font-size: 32px;
+}
+
+#addPostButton {
+  position: fixed;
+  bottom: 10vh;
+  right: 5vw;
 }
 </style>

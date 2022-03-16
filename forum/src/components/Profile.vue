@@ -5,9 +5,14 @@
       <div id="posts">
         <UserPost v-for="post in posts"
           :key="post.id"
+          :id="post.id"
           :title="post.title"
+          :username="post.username"
+          :profilePicture="server.profilePic"
           :date="post.daytime"
-          :body="post.text"/>
+          :body="post.text"
+          :likes="post.likes"
+          :liked="post.liked" />
       </div>
       <div class="info">
         <img src="@/assets/profile.png" alt="Profile Picture">
@@ -52,7 +57,10 @@ export default {
       id: this.id
     })
     let response = await server.postData(body, 'getUserPost')
-
+    let liked
+    if (server.logedIn) {
+      liked = await server.getData('liked')
+    }
     console.log(response)
     var option = { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', secound: 'numeric' }
     response.posts.forEach(e => {
@@ -61,6 +69,13 @@ export default {
       var d = new Date(Date.UTC(t[0], t[1] - 1, t[2], t[3], t[4], t[5]))
       d = d.toLocaleDateString('en-UK', option)
       e.daytime = d
+      if (server.logedIn) {
+        liked.forEach(el => {
+          if (el.postid === e.id) {
+            e.liked = true
+          }
+        })
+      }
       this.posts.push(e)
     })
 
