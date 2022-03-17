@@ -1,5 +1,5 @@
 <template>
-  <div class="post">
+  <div class="post" :class="{ active: view}">
     <div class="post-title" @click="view = !view">
       <h3>{{ title }}</h3>
       <h4>{{ date }}</h4>
@@ -127,9 +127,14 @@ export default {
 .post {
   border-radius: 20px;
   background-color: #97BBE6;
-  padding-right: 10px;
-  padding-left: 10px;
   margin: 20px;
+  padding: 10px;
+}
+
+.active {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
 }
 
 .post-title {
@@ -144,9 +149,14 @@ export default {
   border-radius: 20px;
 }
 
-.post-control {
+.post-sub {
   display: flex;
   gap: 20px;
+}
+
+.column {
+  flex-direction: column;
+  width: min-content;
 }
 
 .post-like {
@@ -172,6 +182,7 @@ export default {
   border-color: black;
   border-width: 2px;
   border-radius: 10px;
+  padding: 5px;
 }
 
 .post-comment > h4 {
@@ -187,5 +198,10 @@ img {
 .comment-btn {
   background-color: transparent;
   border-color: transparent;
+}
+
+textarea {
+  padding: 3px;
+  border-radius: 5px;
 }
 </style>

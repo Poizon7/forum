@@ -14,7 +14,7 @@
       <div id="posts">
         <h2>Posts</h2>
         <div id="post-container">
-          <div class="post" v-for="post in posts" :key="post.id" @click="showPost(post.id)">
+          <div class="post-entry" v-for="post in posts" :key="post.id" @click="showPost(post.id)">
             <h3>{{ post.title }}</h3>
           </div>
         </div>
@@ -166,7 +166,7 @@ export default {
   flex-direction: row;
 }
 
-.post {
+.post-entry {
   margin: 10px;
   padding: 10px;
   width: max-content;

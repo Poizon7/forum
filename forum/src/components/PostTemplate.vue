@@ -28,12 +28,14 @@ export default {
 }
 
 input {
-  border-radius: 20px;
+  border-radius: 10px;
   font-size: 20px;
+  padding: 3px;
 }
 
 textarea {
-  border-radius: 20px;
+  border-radius: 10px;
   font-size: 20px;
+  padding: 3px;
 }
 </style>

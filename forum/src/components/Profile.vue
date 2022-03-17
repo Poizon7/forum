@@ -97,6 +97,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   text-align: center;
+  height: min-content;
 
   background-color: #97BBE6;
   border-radius: 20px;
