@@ -8,7 +8,7 @@
     <div class="search">
       <form action="">
       <label for="search"></label>
-      <input name="serach" type="text" v-model="searchterm">
+      <input name="search" type="text" v-model="searchterm">
       <button @click.prevent="search" name="search button">
         <img src="@/assets/search.png" alt="">
       </button>
