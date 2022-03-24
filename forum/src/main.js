@@ -7,7 +7,7 @@ export const server = reactive({
   userid: '',
   profilePic: '../assets/profile.png',
   logedIn: false,
-  serverURL: 'http://10.156.10.167:3000/',
+  serverURL: 'https://languageforum.herokuapp.com:3000/',
   searchterm: '',
   timeOption: { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', secound: 'numeric' },
   timeFormat: 'en-UK',
